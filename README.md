@@ -23,7 +23,7 @@ Defaults to ``login``.
 License
 -------
 
-The (original module)[http://atlee.ca/software/pam/] was written by Chris AtLee,
+The [original module](http://atlee.ca/software/pam/) was written by Chris AtLee,
 see the original copyright notice:
 
     Copyright (C) 2007-2009 Chris AtLee <chris@atlee.ca>.
@@ -32,4 +32,4 @@ see the original copyright notice:
 Modifications 2013 by Leon Weber <leon@leonweber.de>:
 * Ported to Python3
 
-This module is licensed under the (MIT license)[http://www.opensource.org/licenses/mit-license.php].
+This module is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
