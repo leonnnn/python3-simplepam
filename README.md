@@ -20,6 +20,9 @@ Import the ``authenticate`` function, and use it as follows:
 The ``service`` argument specifies the PAM service to authenticate against.
 Defaults to ``login``.
 
+The function returns ``True`` if the authentication succeeds and returns
+``False`` if authentication fails (or if PAM returns an error (FIXME)).
+
 License
 -------
 
