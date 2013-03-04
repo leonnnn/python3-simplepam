@@ -11,4 +11,5 @@ setup(name='python3-pam', version='0.1.4alpha',
     author='Leon Weber <leon@leonweber.de>, Chris AtLee <chris@atlee.ca>',
     author_email='leon@leonweber.de',
     url='https://github.com/leonnnn/python3-pam',
+    license='MIT'
 )
