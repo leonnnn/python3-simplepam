@@ -16,8 +16,10 @@ Usage
 Run ``python3 setup.py install`` as root to install the module, then import the
 ``authenticate`` function, and use it as follows:
 
+```python
     from pam import authenticate
     authenticate(username, password, service)
+```
 
 The ``service`` argument specifies the PAM service to authenticate against.
 Defaults to ``login``.
