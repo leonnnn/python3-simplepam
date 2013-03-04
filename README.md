@@ -13,7 +13,7 @@ authenticate a given username / password against the PAM system on Linux.
 Usage
 -----
 
-Run ``python3 setup.py install`` to install the module, then import the 
+Run ``python3 setup.py install`` as root to install the module, then import the
 ``authenticate`` function, and use it as follows:
 
     from pam import authenticate
