@@ -19,16 +19,16 @@ from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, pointer, sizeof
 from ctypes import c_void_p, c_uint, c_char_p, c_char, c_int
 from ctypes.util import find_library
 
-LIBPAM = CDLL(find_library("pam"))
-LIBC = CDLL(find_library("c"))
+libpam = CDLL(find_library("pam"))
+libc = CDLL(find_library("c"))
 
-CALLOC = LIBC.calloc
-CALLOC.restype = c_void_p
-CALLOC.argtypes = [c_uint, c_uint]
+calloc = libc.calloc
+calloc.restype = c_void_p
+calloc.argtypes = [c_uint, c_uint]
 
-STRDUP = LIBC.strdup
-STRDUP.argstypes = [c_char_p]
-STRDUP.restype = POINTER(c_char)  # NOT c_char_p !!!!
+strdup = libc.strdup
+strdup.argstypes = [c_char_p]
+strdup.restype = POINTER(c_char)  # NOT c_char_p !!!!
 
 # Various constants
 PAM_PROMPT_ECHO_OFF = 1
@@ -69,29 +69,29 @@ class PamResponse(Structure):
     def __repr__(self):
         return "<PamResponse %i '%s'>" % (self.resp_retcode, self.resp)
 
-CONV_FUNC = CFUNCTYPE(c_int, c_int, POINTER(POINTER(PamMessage)),
+conv_func = CFUNCTYPE(c_int, c_int, POINTER(POINTER(PamMessage)),
                       POINTER(POINTER(PamResponse)), c_void_p)
 
 
 class PamConv(Structure):
     """wrapper class for pam_conv structure"""
     _fields_ = [
-        ("conv", CONV_FUNC),
+        ("conv", conv_func),
         ("appdata_ptr", c_void_p)
     ]
 
-PAM_START = LIBPAM.pam_start
-PAM_START.restype = c_int
-PAM_START.argtypes = [c_char_p, c_char_p, POINTER(PamConv),
+pam_start = libpam.pam_start
+pam_start.restype = c_int
+pam_start.argtypes = [c_char_p, c_char_p, POINTER(PamConv),
                       POINTER(PamHandle)]
 
-PAM_AUTHENTICATE = LIBPAM.pam_authenticate
-PAM_AUTHENTICATE.restype = c_int
-PAM_AUTHENTICATE.argtypes = [PamHandle, c_int]
+pam_authenticate = libpam.pam_authenticate
+pam_authenticate.restype = c_int
+pam_authenticate.argtypes = [PamHandle, c_int]
 
-PAM_END = LIBPAM.pam_end
-PAM_END.restype = c_int
-PAM_END.argtypes = [PamHandle, c_int]
+pam_end = libpam.pam_end
+pam_end.restype = c_int
+pam_end.argtypes = [PamHandle, c_int]
 
 
 def authenticate(username, password, service='login'):
@@ -104,23 +104,23 @@ def authenticate(username, password, service='login'):
 
     ``service``: the PAM service to authenticate against.
                  Defaults to 'login'"""
-    @CONV_FUNC
+    @conv_func
     def my_conv(n_messages, messages, p_response, app_data):
         """Simple conversation function that responds to any
         prompt where the echo is off with the supplied password"""
         # Create an array of n_messages response objects
-        addr = CALLOC(n_messages, sizeof(PamResponse))
+        addr = calloc(n_messages, sizeof(PamResponse))
         p_response[0] = cast(addr, POINTER(PamResponse))
         for i in range(n_messages):
             if messages[i].contents.msg_style == PAM_PROMPT_ECHO_OFF:
-                pw_copy = STRDUP(password.encode('utf-8'))
+                pw_copy = strdup(password.encode('utf-8'))
                 p_response.contents[i].resp = cast(pw_copy, c_char_p)
                 p_response.contents[i].resp_retcode = 0
         return 0
 
     handle = PamHandle()
     conv = PamConv(my_conv, 0)
-    retval = PAM_START(service.encode('utf-8'), username.encode('utf-8'),
+    retval = pam_start(service.encode('utf-8'), username.encode('utf-8'),
                        pointer(conv), pointer(handle))
 
     if retval != 0:
@@ -128,9 +128,9 @@ def authenticate(username, password, service='login'):
         # has gone wrong starting up PAM
         return False
 
-    retval = PAM_AUTHENTICATE(handle, 0)
+    retval = pam_authenticate(handle, 0)
 
-    PAM_END(handle, retval)
+    pam_end(handle, retval)
 
     return retval == 0
 
