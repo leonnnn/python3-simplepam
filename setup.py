@@ -5,7 +5,7 @@ desc = (
     'on linux, written in pure python (using ctypes)'
 )
 
-setup(name='pam', version='0.1.4alpha',
+setup(name='python3-pam', version='0.1.4alpha',
     description=desc,
     py_modules=['pam'],
     author='Leon Weber <leon@leonweber.de>, Chris AtLee <chris@atlee.ca',
