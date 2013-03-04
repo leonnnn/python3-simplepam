@@ -38,5 +38,7 @@ see the original copyright notice:
 
 Modifications 2013 by Leon Weber <leon@leonweber.de>:
 * Ported to Python3
+* Add call to ``pam_end()``
+* Use ``ctypes.byref()`` instead of ``ctypes.pointer()`` to pass arguments by reference
 
 This module is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
