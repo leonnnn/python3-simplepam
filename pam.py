@@ -86,6 +86,11 @@ PAM_AUTHENTICATE = LIBPAM.pam_authenticate
 PAM_AUTHENTICATE.restype = c_int
 PAM_AUTHENTICATE.argtypes = [PamHandle, c_int]
 
+PAM_END = LIBPAM.pam_end
+PAM_END.restype = c_int
+PAM_END.argtypes = [PamHandle, c_int]
+
+
 def authenticate(username, password, service='login'):
     """Returns True if the given username and password authenticate for the
     given service.  Returns False otherwise
@@ -121,6 +126,9 @@ def authenticate(username, password, service='login'):
         return False
 
     retval = PAM_AUTHENTICATE(handle, 0)
+
+    PAM_END(handle, retval)
+
     return retval == 0
 
 if __name__ == "__main__":
