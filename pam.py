@@ -15,7 +15,7 @@ Implemented using ctypes, so no compilation is necessary.
 """
 __all__ = ['authenticate']
 
-from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, pointer, sizeof
+from ctypes import CDLL, POINTER, Structure, CFUNCTYPE, cast, byref, sizeof
 from ctypes import c_void_p, c_uint, c_char_p, c_char, c_int
 from ctypes.util import find_library
 
@@ -121,7 +121,7 @@ def authenticate(username, password, service='login'):
     handle = PamHandle()
     conv = PamConv(my_conv, 0)
     retval = pam_start(service.encode('utf-8'), username.encode('utf-8'),
-                       pointer(conv), pointer(handle))
+                       byref(conv), byref(handle))
 
     if retval != 0:
         # TODO: This is not an authentication error, something
