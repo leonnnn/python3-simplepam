@@ -94,7 +94,7 @@ pam_end.restype = c_int
 pam_end.argtypes = [PamHandle, c_int]
 
 
-def authenticate(username, password, service='login'):
+def authenticate(username, password, *, service='login', encoding='utf-8'):
     """Returns True if the given username and password authenticate for the
     given service.  Returns False otherwise
 
@@ -104,6 +104,16 @@ def authenticate(username, password, service='login'):
 
     ``service``: the PAM service to authenticate against.
                  Defaults to 'login'"""
+
+    if isinstance(password, str):
+        password = password.encode(encoding)
+
+    if isinstance(username, str):
+        username = username.encode(encoding)
+
+    if isinstance(service, str):
+        service = service.encode(encoding)
+
     @conv_func
     def my_conv(n_messages, messages, p_response, app_data):
         """Simple conversation function that responds to any
@@ -113,15 +123,14 @@ def authenticate(username, password, service='login'):
         p_response[0] = cast(addr, POINTER(PamResponse))
         for i in range(n_messages):
             if messages[i].contents.msg_style == PAM_PROMPT_ECHO_OFF:
-                pw_copy = strdup(password.encode('utf-8'))
+                pw_copy = strdup(password)
                 p_response.contents[i].resp = cast(pw_copy, c_char_p)
                 p_response.contents[i].resp_retcode = 0
         return 0
 
     handle = PamHandle()
     conv = PamConv(my_conv, 0)
-    retval = pam_start(service.encode('utf-8'), username.encode('utf-8'),
-                       byref(conv), byref(handle))
+    retval = pam_start(service, username, byref(conv), byref(handle))
 
     if retval != 0:
         # TODO: This is not an authentication error, something
