@@ -1,5 +1,5 @@
-python3-pam
-===========
+python3-simplepam
+=================
 
 An interface to the Pluggable Authentication Modules (PAM) library on linux,
 written in pure python (using ctypes)
@@ -17,7 +17,7 @@ Run ``python3 setup.py install`` as root to install the module, then import the
 ``authenticate`` function, and use it as follows:
 
 ```python
-    from pam import authenticate
+    from simplepam import authenticate
     authenticate(username, password, service)
 ```
 
@@ -30,8 +30,8 @@ The function returns ``True`` if the authentication succeeds and returns
 License
 -------
 
-The [original module](http://atlee.ca/software/pam/) was written by Chris AtLee,
-see the original copyright notice:
+The [original python-pam module](http://atlee.ca/software/pam/) was written by
+Chris AtLee, see the original copyright notice:
 
     Copyright (C) 2007-2009 Chris AtLee <chris@atlee.ca>.
     Licensed under the MIT license. 
