@@ -36,6 +36,8 @@ PAM_PROMPT_ECHO_ON = 2
 PAM_ERROR_MSG = 3
 PAM_TEXT_INFO = 4
 
+PAM_REINITIALIZE_CRED = 0x0008  # This constant is libpam-specific.
+
 
 class PamHandle(Structure):
     """wrapper class for pam_handle_t"""
@@ -89,12 +91,17 @@ pam_authenticate = libpam.pam_authenticate
 pam_authenticate.restype = c_int
 pam_authenticate.argtypes = [PamHandle, c_int]
 
+pam_setcred = libpam.pam_setcred
+pam_setcred.restype = c_int
+pam_setcred.argtypes = [PamHandle, c_int]
+
 pam_end = libpam.pam_end
 pam_end.restype = c_int
 pam_end.argtypes = [PamHandle, c_int]
 
 
-def authenticate(username, password, *, service='login', encoding='utf-8'):
+def authenticate(username, password, *, service='login', encoding='utf-8',
+                 resetcred=True):
     """Returns True if the given username and password authenticate for the
     given service.  Returns False otherwise
 
@@ -103,7 +110,11 @@ def authenticate(username, password, *, service='login', encoding='utf-8'):
     ``password``: the password in plain text
 
     ``service``: the PAM service to authenticate against.
-                 Defaults to 'login'"""
+                 Defaults to 'login'
+
+    ``resetcred``: Use the pam_setcred() function to
+                   reinitialize the credentials.
+                   Defaults to 'True'."""
 
     if isinstance(password, str):
         password = password.encode(encoding)
@@ -138,10 +149,17 @@ def authenticate(username, password, *, service='login', encoding='utf-8'):
         return False
 
     retval = pam_authenticate(handle, 0)
+    auth_success = retval == 0
+
+    # Re-initialize credentials (for Kerberos users, etc)
+    # Don't check return code of pam_setcred(), it shouldn't matter
+    # if this fails
+    if auth_success and resetcred:
+        retval = pam_setcred(handle, PAM_REINITIALIZE_CRED)
 
     pam_end(handle, retval)
 
-    return retval == 0
+    return auth_success
 
 if __name__ == "__main__":
     import getpass
