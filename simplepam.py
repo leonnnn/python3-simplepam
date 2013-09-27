@@ -149,7 +149,7 @@ def authenticate(username, password, *, service='login', encoding='utf-8',
         return False
 
     retval = pam_authenticate(handle, 0)
-    auth_success = retval == 0
+    auth_success = (retval == 0)
 
     # Re-initialize credentials (for Kerberos users, etc)
     # Don't check return code of pam_setcred(), it shouldn't matter
