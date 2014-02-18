@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 desc = (
-    'An interface to the Pluggable Authentication Modules (PAM) library'
+    'An interface to the Pluggable Authentication Modules (PAM) library '
     'on linux, written in pure python (using ctypes)'
 )
 
