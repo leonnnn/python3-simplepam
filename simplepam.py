@@ -1,5 +1,5 @@
-# Modified 2013 Leon Weber <leon@leonweber.de>:
-#     * Ported to python3
+# Modified 2013-2014 Leon Weber <leon@leonweber.de>:
+# See README.md for changelog
 #
 # Original author:
 # (c) 2007 Chris AtLee <chris@atlee.ca>
