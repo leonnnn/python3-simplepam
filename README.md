@@ -21,8 +21,19 @@ Run ``python3 setup.py install`` as root to install the module, then import the
     authenticate(username, password, service)
 ```
 
+The full function signature is as follows:
+
+```python
+    authenticate(username, password, service='login', encoding='utf-8',
+                 resetcred=True)
+```
+
 The ``service`` argument specifies the PAM service to authenticate against.
 Defaults to ``login``.
+
+``username``, ``password`` and ``service`` can be given as strings or bytes. If
+they are strings, they will be encoded using the encoding given by the
+``encoding`` parameter, or, if omitted, as UTF-8.
 
 The function returns ``True`` if the authentication succeeds and returns
 ``False`` if authentication fails (or if PAM returns an error (FIXME)).
@@ -42,6 +53,7 @@ Modifications 2013-2014 by Leon Weber <leon@leonweber.de>:
 * Use ``ctypes.byref()`` instead of ``ctypes.pointer()`` to pass arguments by reference
 * Properly handle encoding of password, username and service (Patch by Sebastian
   Riese)
+* Add call to ``pam_reset()`` (Patch by Lertsenem)
 * Re-add Python2 support (Patch by Victor Stinner of eNovance)
 
 This module is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).

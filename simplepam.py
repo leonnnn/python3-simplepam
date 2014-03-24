@@ -104,7 +104,7 @@ pam_end.argtypes = [PamHandle, c_int]
 def authenticate(username, password, service='login', encoding='utf-8',
                  resetcred=True):
     """Returns True if the given username and password authenticate for the
-    given service.  Returns False otherwise
+    given service.  Returns False otherwise.
 
     ``username``: the username to authenticate
 
@@ -113,9 +113,16 @@ def authenticate(username, password, service='login', encoding='utf-8',
     ``service``: the PAM service to authenticate against.
                  Defaults to 'login'
 
+    The above parameters can be strings or bytes.  If they are strings,
+    they will be encoded using the encoding given by:
+
+    ``encoding``: the encoding to use for the above parameters if they
+                  are given as strings.  Defaults to 'utf-8'
+
     ``resetcred``: Use the pam_setcred() function to
                    reinitialize the credentials.
-                   Defaults to 'True'."""
+                   Defaults to 'True'.
+    """
 
     if sys.version_info >= (3,):
         if isinstance(username, str):
