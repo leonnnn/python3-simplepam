@@ -36,9 +36,11 @@ Chris AtLee, see the original copyright notice:
     Copyright (C) 2007-2009 Chris AtLee <chris@atlee.ca>.
     Licensed under the MIT license. 
 
-Modifications 2013 by Leon Weber <leon@leonweber.de>:
+Modifications 2013-2014 by Leon Weber <leon@leonweber.de>:
 * Ported to Python3
 * Add call to ``pam_end()``
 * Use ``ctypes.byref()`` instead of ``ctypes.pointer()`` to pass arguments by reference
+* Properly handle encoding of password, username and service (Patch by Sebastian
+  Riese)
 
 This module is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
