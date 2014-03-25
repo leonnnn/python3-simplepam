@@ -38,6 +38,10 @@ they are strings, they will be encoded using the encoding given by the
 The function returns ``True`` if the authentication succeeds and returns
 ``False`` if authentication fails (or if PAM returns an error (FIXME)).
 
+Python version
+--------------
+Despite its name, this module works with both Python 2 and Python 3.
+
 License
 -------
 
