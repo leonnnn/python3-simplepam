@@ -40,7 +40,7 @@ The function returns ``True`` if the authentication succeeds and returns
 
 Python version
 --------------
-Despite its name, this module works with both Python 2 and Python 3.
+This module works with both Python 2 and Python 3.
 
 License
 -------
@@ -57,7 +57,7 @@ Modifications 2013-2014 by Leon Weber <leon@leonweber.de>:
 * Use ``ctypes.byref()`` instead of ``ctypes.pointer()`` to pass arguments by reference
 * Properly handle encoding of password, username and service (Patch by Sebastian
   Riese)
-* Add call to ``pam_reset()`` (Patch by Lertsenem)
+* Add call to ``pam_setcred()`` (Patch by Lertsenem)
 * Re-add Python2 support (Patch by Victor Stinner of eNovance)
 
 This module is licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
